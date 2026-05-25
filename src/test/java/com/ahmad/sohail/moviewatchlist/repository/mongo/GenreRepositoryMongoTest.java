@@ -3,6 +3,9 @@ package com.ahmad.sohail.moviewatchlist.repository.mongo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import org.junit.After;
@@ -71,5 +74,36 @@ public class GenreRepositoryMongoTest {
 
 	private void addTestGenreToDatabase(String id, String name) {
 		genreCollection.insertOne(new Document().append("id", id).append("name", name));
+	}
+
+	@Test
+	public void testFindByIdNotFound() {
+		assertThat(genreRepository.findById("1")).isNull();
+	}
+
+	@Test
+	public void testFindByIdFound() {
+		addTestGenreToDatabase("1", "Action");
+		addTestGenreToDatabase("2", "Comedy");
+		assertThat(genreRepository.findById("2")).isEqualTo(new Genre("2", "Comedy"));
+	}
+
+	@Test
+	public void testSave() {
+		Genre genre = new Genre("1", "Action");
+		genreRepository.save(genre);
+		assertThat(readAllGenresFromDatabase()).containsExactly(new Genre("1", "Action"));
+	}
+
+	private List<Genre> readAllGenresFromDatabase() {
+		return StreamSupport.stream(genreCollection.find().spliterator(), false)
+				.map(d -> new Genre("" + d.get("id"), "" + d.get("name"))).collect(Collectors.toList());
+	}
+
+	@Test
+	public void testDelete() {
+		addTestGenreToDatabase("1", "Action");
+		genreRepository.delete("1");
+		assertThat(readAllGenresFromDatabase()).isEmpty();
 	}
 }
