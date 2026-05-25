@@ -1,12 +1,16 @@
 package com.ahmad.sohail.moviewatchlist.controller;
 
+import static org.mockito.Mockito.ignoreStubs;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -49,5 +53,24 @@ public class MovieWatchlistControllerTest {
         when(movieRepository.findAll()).thenReturn(movies);
         controller.allMovies();
         verify(view).showAllMovies(movies);
+    }
+    
+    @Test
+    public void testNewGenreWhenGenreDoesNotExist() {
+        when(genreRepository.findById("1")).thenReturn(null);
+        Genre genre = new Genre("1", "Action");
+        controller.newGenre(genre);
+        InOrder inOrder = inOrder(genreRepository, view);
+        inOrder.verify(genreRepository).save(genre);
+        inOrder.verify(view).genreAdded(genre);
+    }
+
+    @Test
+    public void testNewGenreWhenGenreAlreadyExists() {
+        Genre existingGenre = new Genre("1", "Action");
+        when(genreRepository.findById("1")).thenReturn(existingGenre);
+        controller.newGenre(new Genre("1", "Action"));
+        verify(view).showError("Already existing genre with id 1", existingGenre);
+        verifyNoMoreInteractions(ignoreStubs(genreRepository));
     }
 }
