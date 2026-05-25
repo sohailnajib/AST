@@ -1,6 +1,7 @@
 package com.ahmad.sohail.moviewatchlist.controller;
 
 import com.ahmad.sohail.moviewatchlist.model.Genre;
+import com.ahmad.sohail.moviewatchlist.model.Movie;
 import com.ahmad.sohail.moviewatchlist.repository.GenreRepository;
 import com.ahmad.sohail.moviewatchlist.repository.MovieRepository;
 import com.ahmad.sohail.moviewatchlist.view.MovieWatchlistView;
@@ -43,5 +44,15 @@ public class MovieWatchlistController {
 		}
 		genreRepository.delete(genre.getId());
 		view.genreRemoved(genre);
+	}
+
+	public void newMovie(Movie movie) {
+		Movie existing = movieRepository.findById(movie.getId());
+		if (existing != null) {
+			view.showError("Already existing movie with id " + movie.getId(), existing);
+			return;
+		}
+		movieRepository.save(movie);
+		view.movieAdded(movie);
 	}
 }

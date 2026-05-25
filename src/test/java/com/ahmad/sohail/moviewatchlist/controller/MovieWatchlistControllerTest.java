@@ -92,4 +92,23 @@ public class MovieWatchlistControllerTest {
 		verify(view).showError("No existing genre with id 1", genre);
 		verifyNoMoreInteractions(ignoreStubs(genreRepository));
 	}
+
+	@Test
+	public void testNewMovieWhenMovieDoesNotExist() {
+		when(movieRepository.findById("1")).thenReturn(null);
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		controller.newMovie(movie);
+		InOrder inOrder = inOrder(movieRepository, view);
+		inOrder.verify(movieRepository).save(movie);
+		inOrder.verify(view).movieAdded(movie);
+	}
+
+	@Test
+	public void testNewMovieWhenMovieAlreadyExists() {
+		Movie existingMovie = new Movie("1", "Inception", 2010, "1");
+		when(movieRepository.findById("1")).thenReturn(existingMovie);
+		controller.newMovie(new Movie("1", "Inception", 2010, "1"));
+		verify(view).showError("Already existing movie with id 1", existingMovie);
+		verifyNoMoreInteractions(ignoreStubs(movieRepository));
+	}
 }
