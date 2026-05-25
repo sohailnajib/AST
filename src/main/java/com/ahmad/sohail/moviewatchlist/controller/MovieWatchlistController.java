@@ -35,4 +35,13 @@ public class MovieWatchlistController {
 		genreRepository.save(genre);
 		view.genreAdded(genre);
 	}
+
+	public void deleteGenre(Genre genre) {
+		if (genreRepository.findById(genre.getId()) == null) {
+			view.showError("No existing genre with id " + genre.getId(), genre);
+			return;
+		}
+		genreRepository.delete(genre.getId());
+		view.genreRemoved(genre);
+	}
 }

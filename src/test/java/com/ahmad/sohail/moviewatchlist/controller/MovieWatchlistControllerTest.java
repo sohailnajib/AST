@@ -22,55 +22,74 @@ import com.ahmad.sohail.moviewatchlist.view.MovieWatchlistView;
 
 public class MovieWatchlistControllerTest {
 
-    @Mock
-    private MovieWatchlistView view;
+	@Mock
+	private MovieWatchlistView view;
 
-    @Mock
-    private GenreRepository genreRepository;
+	@Mock
+	private GenreRepository genreRepository;
 
-    @Mock
-    private MovieRepository movieRepository;
+	@Mock
+	private MovieRepository movieRepository;
 
-    private MovieWatchlistController controller;
+	private MovieWatchlistController controller;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-        controller = new MovieWatchlistController(view, genreRepository, movieRepository);
-    }
+	@Before
+	public void setup() {
+		MockitoAnnotations.openMocks(this);
+		controller = new MovieWatchlistController(view, genreRepository, movieRepository);
+	}
 
-    @Test
-    public void testAllGenres() {
-        java.util.List<Genre> genres = Arrays.asList(new Genre("1", "Action"));
-        when(genreRepository.findAll()).thenReturn(genres);
-        controller.allGenres();
-        verify(view).showAllGenres(genres);
-    }
+	@Test
+	public void testAllGenres() {
+		java.util.List<Genre> genres = Arrays.asList(new Genre("1", "Action"));
+		when(genreRepository.findAll()).thenReturn(genres);
+		controller.allGenres();
+		verify(view).showAllGenres(genres);
+	}
 
-    @Test
-    public void testAllMovies() {
-        java.util.List<Movie> movies = Arrays.asList(new Movie("1", "Inception", 2010, "1"));
-        when(movieRepository.findAll()).thenReturn(movies);
-        controller.allMovies();
-        verify(view).showAllMovies(movies);
-    }
-    
-    @Test
-    public void testNewGenreWhenGenreDoesNotExist() {
-        when(genreRepository.findById("1")).thenReturn(null);
-        Genre genre = new Genre("1", "Action");
-        controller.newGenre(genre);
-        InOrder inOrder = inOrder(genreRepository, view);
-        inOrder.verify(genreRepository).save(genre);
-        inOrder.verify(view).genreAdded(genre);
-    }
+	@Test
+	public void testAllMovies() {
+		java.util.List<Movie> movies = Arrays.asList(new Movie("1", "Inception", 2010, "1"));
+		when(movieRepository.findAll()).thenReturn(movies);
+		controller.allMovies();
+		verify(view).showAllMovies(movies);
+	}
 
-    @Test
-    public void testNewGenreWhenGenreAlreadyExists() {
-        Genre existingGenre = new Genre("1", "Action");
-        when(genreRepository.findById("1")).thenReturn(existingGenre);
-        controller.newGenre(new Genre("1", "Action"));
-        verify(view).showError("Already existing genre with id 1", existingGenre);
-        verifyNoMoreInteractions(ignoreStubs(genreRepository));
-    }
+	@Test
+	public void testNewGenreWhenGenreDoesNotExist() {
+		when(genreRepository.findById("1")).thenReturn(null);
+		Genre genre = new Genre("1", "Action");
+		controller.newGenre(genre);
+		InOrder inOrder = inOrder(genreRepository, view);
+		inOrder.verify(genreRepository).save(genre);
+		inOrder.verify(view).genreAdded(genre);
+	}
+
+	@Test
+	public void testNewGenreWhenGenreAlreadyExists() {
+		Genre existingGenre = new Genre("1", "Action");
+		when(genreRepository.findById("1")).thenReturn(existingGenre);
+		controller.newGenre(new Genre("1", "Action"));
+		verify(view).showError("Already existing genre with id 1", existingGenre);
+		verifyNoMoreInteractions(ignoreStubs(genreRepository));
+	}
+
+	@Test
+	public void testDeleteGenreWhenGenreExists() {
+		Genre genreToDelete = new Genre("1", "Action");
+		when(genreRepository.findById("1")).thenReturn(genreToDelete);
+		controller.deleteGenre(genreToDelete);
+		InOrder inOrder = inOrder(genreRepository, view);
+		inOrder.verify(genreRepository).delete("1");
+		inOrder.verify(view).genreRemoved(genreToDelete);
+	}
+
+	@Test
+	public void testDeleteGenreWhenGenreDoesNotExist() {
+		Genre genre = new Genre("1", "Action");
+		when(genreRepository.findById("1")).thenReturn(null);
+		controller.deleteGenre(genre);
+		verify(view).showError("No existing genre with id 1", genre);
+		verifyNoMoreInteractions(ignoreStubs(genreRepository));
+	}
 }
