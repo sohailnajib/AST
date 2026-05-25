@@ -1,0 +1,28 @@
+package com.ahmad.sohail.moviewatchlist.controller;
+
+import com.ahmad.sohail.moviewatchlist.repository.GenreRepository;
+import com.ahmad.sohail.moviewatchlist.repository.MovieRepository;
+import com.ahmad.sohail.moviewatchlist.view.MovieWatchlistView;
+
+public class MovieWatchlistController {
+
+    private MovieWatchlistView view;
+    private GenreRepository genreRepository;
+    private MovieRepository movieRepository;
+
+    public MovieWatchlistController(MovieWatchlistView view,
+            GenreRepository genreRepository,
+            MovieRepository movieRepository) {
+        this.view = view;
+        this.genreRepository = genreRepository;
+        this.movieRepository = movieRepository;
+    }
+
+    public void allGenres() {
+        view.showAllGenres(genreRepository.findAll());
+    }
+
+    public void allMovies() {
+        view.showAllMovies(movieRepository.findAll());
+    }
+}
