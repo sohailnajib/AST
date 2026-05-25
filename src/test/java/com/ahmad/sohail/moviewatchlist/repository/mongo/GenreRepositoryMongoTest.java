@@ -22,43 +22,54 @@ import de.bwaldvogel.mongo.backend.memory.MemoryBackend;
 
 public class GenreRepositoryMongoTest {
 
-    private static final String DB_NAME = "moviewatchlist";
-    private static final String COLLECTION_NAME = "genre";
+	private static final String DB_NAME = "moviewatchlist";
+	private static final String COLLECTION_NAME = "genre";
 
-    private static MongoServer server;
-    private static InetSocketAddress serverAddress;
+	private static MongoServer server;
+	private static InetSocketAddress serverAddress;
 
-    private MongoClient client;
-    private GenreRepositoryMongo genreRepository;
-    private MongoCollection<Document> genreCollection;
+	private MongoClient client;
+	private GenreRepositoryMongo genreRepository;
+	private MongoCollection<Document> genreCollection;
 
-    @BeforeClass
-    public static void setupServer() {
-        server = new MongoServer(new MemoryBackend());
-        serverAddress = server.bind();
-    }
+	@BeforeClass
+	public static void setupServer() {
+		server = new MongoServer(new MemoryBackend());
+		serverAddress = server.bind();
+	}
 
-    @AfterClass
-    public static void shutdownServer() {
-        server.shutdown();
-    }
+	@AfterClass
+	public static void shutdownServer() {
+		server.shutdown();
+	}
 
-    @Before
-    public void setup() {
-        client = new MongoClient(new ServerAddress(serverAddress));
-        genreRepository = new GenreRepositoryMongo(client, DB_NAME, COLLECTION_NAME);
-        MongoDatabase database = client.getDatabase(DB_NAME);
-        database.drop();
-        genreCollection = database.getCollection(COLLECTION_NAME);
-    }
+	@Before
+	public void setup() {
+		client = new MongoClient(new ServerAddress(serverAddress));
+		genreRepository = new GenreRepositoryMongo(client, DB_NAME, COLLECTION_NAME);
+		MongoDatabase database = client.getDatabase(DB_NAME);
+		database.drop();
+		genreCollection = database.getCollection(COLLECTION_NAME);
+	}
 
-    @After
-    public void tearDown() {
-        client.close();
-    }
+	@After
+	public void tearDown() {
+		client.close();
+	}
 
-    @Test
-    public void testFindAllWhenDatabaseIsEmpty() {
-        assertThat(genreRepository.findAll()).isEmpty();
-    }
+	@Test
+	public void testFindAllWhenDatabaseIsEmpty() {
+		assertThat(genreRepository.findAll()).isEmpty();
+	}
+
+	@Test
+	public void testFindAllWhenDatabaseIsNotEmpty() {
+		addTestGenreToDatabase("1", "Action");
+		addTestGenreToDatabase("2", "Comedy");
+		assertThat(genreRepository.findAll()).containsExactly(new Genre("1", "Action"), new Genre("2", "Comedy"));
+	}
+
+	private void addTestGenreToDatabase(String id, String name) {
+		genreCollection.insertOne(new Document().append("id", id).append("name", name));
+	}
 }
