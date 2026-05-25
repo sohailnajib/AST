@@ -55,4 +55,23 @@ public class MovieWatchlistController {
 		movieRepository.save(movie);
 		view.movieAdded(movie);
 	}
+
+	public void deleteMovie(Movie movie) {
+		if (movieRepository.findById(movie.getId()) == null) {
+			view.showError("No existing movie with id " + movie.getId(), movie);
+			return;
+		}
+		movieRepository.delete(movie.getId());
+		view.movieRemoved(movie);
+	}
+
+	public void markMovieAsWatched(Movie movie) {
+		if (movieRepository.findById(movie.getId()) == null) {
+			view.showError("No existing movie with id " + movie.getId(), movie);
+			return;
+		}
+		movie.setWatched(true);
+		movieRepository.save(movie);
+		view.movieUpdated(movie);
+	}
 }

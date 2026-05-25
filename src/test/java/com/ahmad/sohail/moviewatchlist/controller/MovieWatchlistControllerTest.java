@@ -111,4 +111,42 @@ public class MovieWatchlistControllerTest {
 		verify(view).showError("Already existing movie with id 1", existingMovie);
 		verifyNoMoreInteractions(ignoreStubs(movieRepository));
 	}
+
+	@Test
+	public void testDeleteMovieWhenMovieExists() {
+		Movie movieToDelete = new Movie("1", "Inception", 2010, "1");
+		when(movieRepository.findById("1")).thenReturn(movieToDelete);
+		controller.deleteMovie(movieToDelete);
+		InOrder inOrder = inOrder(movieRepository, view);
+		inOrder.verify(movieRepository).delete("1");
+		inOrder.verify(view).movieRemoved(movieToDelete);
+	}
+
+	@Test
+	public void testDeleteMovieWhenMovieDoesNotExist() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		when(movieRepository.findById("1")).thenReturn(null);
+		controller.deleteMovie(movie);
+		verify(view).showError("No existing movie with id 1", movie);
+		verifyNoMoreInteractions(ignoreStubs(movieRepository));
+	}
+
+	@Test
+	public void testMarkMovieAsWatchedWhenMovieExists() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		when(movieRepository.findById("1")).thenReturn(movie);
+		controller.markMovieAsWatched(movie);
+		InOrder inOrder = inOrder(movieRepository, view);
+		inOrder.verify(movieRepository).save(movie);
+		inOrder.verify(view).movieUpdated(movie);
+	}
+
+	@Test
+	public void testMarkMovieAsWatchedWhenMovieDoesNotExist() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		when(movieRepository.findById("1")).thenReturn(null);
+		controller.markMovieAsWatched(movie);
+		verify(view).showError("No existing movie with id 1", movie);
+		verifyNoMoreInteractions(ignoreStubs(movieRepository));
+	}
 }
