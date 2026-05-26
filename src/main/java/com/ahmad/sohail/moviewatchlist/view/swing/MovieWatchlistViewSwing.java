@@ -41,10 +41,6 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 
 	private MovieWatchlistController controller;
 
-	public MovieWatchlistController getController() {
-		return controller;
-	}
-
 	public void setController(MovieWatchlistController controller) {
 		this.controller = controller;
 	}

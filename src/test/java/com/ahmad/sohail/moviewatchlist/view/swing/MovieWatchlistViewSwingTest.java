@@ -298,4 +298,25 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Mockito.verify(controller).markMovieAsWatched(movie);
 	}
 
+	@Test
+	@GUITest
+	public void testMovieUpdatedShouldUpdateMovieInList() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		GuiActionRunner.execute(() -> {
+			view.getMovieListModel().addElement(movie);
+		});
+		Movie updatedMovie = new Movie("1", "Inception", 2010, "1");
+		updatedMovie.setWatched(true);
+		GuiActionRunner.execute(() -> view.movieUpdated(updatedMovie));
+		assertThat(window.list("movieList").contents()).containsExactly(updatedMovie.toString());
+	}
+
+	@Test
+	@GUITest
+	public void testMovieUpdatedWhenMovieNotInListShouldDoNothing() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		GuiActionRunner.execute(() -> view.movieUpdated(movie));
+		assertThat(window.list("movieList").contents()).isEmpty();
+	}
+
 }
