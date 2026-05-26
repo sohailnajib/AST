@@ -136,14 +136,26 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 		addGenreButton.addActionListener(
 				e -> controller.newGenre(new Genre(genreIdTextBox.getText(), genreNameTextBox.getText())));
 
-		deleteGenreButton.addActionListener(e -> controller.deleteGenre(genreList.getSelectedValue()));
+		deleteGenreButton.addActionListener(e -> {
+			Genre selectedGenre = genreList.getSelectedValue();
+			if (selectedGenre != null)
+				controller.deleteGenre(selectedGenre);
+		});
 
 		addMovieButton.addActionListener(e -> controller.newMovie(new Movie(movieIdTextBox.getText(),
 				movieTitleTextBox.getText(), Integer.parseInt(movieYearTextBox.getText()), "")));
 
-		deleteMovieButton.addActionListener(e -> controller.deleteMovie(movieList.getSelectedValue()));
+		deleteMovieButton.addActionListener(e -> {
+			Movie selectedMovie = movieList.getSelectedValue();
+			if (selectedMovie != null)
+				controller.deleteMovie(selectedMovie);
+		});
 
-		watchedButton.addActionListener(e -> controller.markMovieAsWatched(movieList.getSelectedValue()));
+		watchedButton.addActionListener(e -> {
+			Movie selectedMovie = movieList.getSelectedValue();
+			if (selectedMovie != null)
+				controller.markMovieAsWatched(selectedMovie);
+		});
 	}
 
 	private void addListSelectionListenerToGenreList() {
