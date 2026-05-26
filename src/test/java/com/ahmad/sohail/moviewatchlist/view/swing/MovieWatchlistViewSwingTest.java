@@ -8,6 +8,9 @@ import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.ahmad.sohail.moviewatchlist.model.Genre;
+import com.ahmad.sohail.moviewatchlist.model.Movie;
+
 @RunWith(GUITestRunner.class)
 public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 
@@ -92,5 +95,53 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.button("addMovieButton").requireDisabled();
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteGenreButtonShouldBeEnabledWhenAGenreIsSelected() {
+		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(new Genre("1", "Action")));
+		window.list("genreList").selectItem(0);
+		window.button("deleteGenreButton").requireEnabled();
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteGenreButtonShouldBeDisabledWhenNoGenreIsSelected() {
+		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(new Genre("1", "Action")));
+		window.list("genreList").clearSelection();
+		window.button("deleteGenreButton").requireDisabled();
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteMovieButtonShouldBeEnabledWhenAMovieIsSelected() {
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
+		window.list("movieList").selectItem(0);
+		window.button("deleteMovieButton").requireEnabled();
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteMovieButtonShouldBeDisabledWhenNoMovieIsSelected() {
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
+		window.list("movieList").clearSelection();
+		window.button("deleteMovieButton").requireDisabled();
+	}
+
+	@Test
+	@GUITest
+	public void testWatchedButtonShouldBeEnabledWhenAMovieIsSelected() {
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
+		window.list("movieList").selectItem(0);
+		window.button("watchedButton").requireEnabled();
+	}
+
+	@Test
+	@GUITest
+	public void testWatchedButtonShouldBeDisabledWhenNoMovieIsSelected() {
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
+		window.list("movieList").clearSelection();
+		window.button("watchedButton").requireDisabled();
 	}
 }
