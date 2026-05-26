@@ -128,6 +128,7 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 		getContentPane().add(movieList);
 		getContentPane().add(errorMessageLabel);
 		addDocumentListenerToEnableAddGenreButton();
+		addDocumentListenerToEnableAddMovieButton();
 
 		pack();
 	}
@@ -156,6 +157,34 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 		};
 		genreIdTextBox.getDocument().addDocumentListener(listener);
 		genreNameTextBox.getDocument().addDocumentListener(listener);
+	}
+
+	private void addDocumentListenerToEnableAddMovieButton() {
+		javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+			@Override
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				updateAddMovieButton();
+			}
+
+			@Override
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				updateAddMovieButton();
+			}
+
+			@Override
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				updateAddMovieButton();
+			}
+
+			private void updateAddMovieButton() {
+				addMovieButton.setEnabled(
+						!movieIdTextBox.getText().trim().isEmpty() && !movieTitleTextBox.getText().trim().isEmpty()
+								&& !movieYearTextBox.getText().trim().isEmpty());
+			}
+		};
+		movieIdTextBox.getDocument().addDocumentListener(listener);
+		movieTitleTextBox.getDocument().addDocumentListener(listener);
+		movieYearTextBox.getDocument().addDocumentListener(listener);
 	}
 
 	@Override
