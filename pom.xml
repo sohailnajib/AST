@@ -24,8 +24,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.27.7</version>
+			<artifactId>assertj-swing-junit</artifactId>
+			<version>3.17.1</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -59,7 +59,8 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.5.5</version>
 					<configuration>
-						<argLine>-XX:+EnableDynamicAgentLoading -Xshare:off</argLine>
+						<argLine>@{argLine} --add-opens
+							java.base/java.util=ALL-UNNAMED</argLine>
 					</configuration>
 				</plugin>
 			</plugins>
