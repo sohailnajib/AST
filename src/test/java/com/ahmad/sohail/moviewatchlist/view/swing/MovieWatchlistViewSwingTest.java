@@ -38,4 +38,26 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("movieTitleTextBox").requireEnabled();
 		window.textBox("movieYearTextBox").requireEnabled();
 	}
+
+	@Test
+	@GUITest
+	public void testAddGenreButtonShouldBeEnabledWhenGenreIdAndNameAreNotEmpty() {
+		window.textBox("genreIdTextBox").enterText("1");
+		window.textBox("genreNameTextBox").enterText("Action");
+		window.button("addGenreButton").requireEnabled();
+	}
+
+	@Test
+	@GUITest
+	public void testAddGenreButtonShouldBeDisabledWhenGenreIdIsEmpty() {
+		window.textBox("genreNameTextBox").enterText("Action");
+		window.button("addGenreButton").requireDisabled();
+	}
+
+	@Test
+	@GUITest
+	public void testAddGenreButtonShouldBeDisabledWhenGenreNameIsEmpty() {
+		window.textBox("genreIdTextBox").enterText("1");
+		window.button("addGenreButton").requireDisabled();
+	}
 }

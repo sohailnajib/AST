@@ -127,8 +127,35 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 		getContentPane().add(watchedButton);
 		getContentPane().add(movieList);
 		getContentPane().add(errorMessageLabel);
+		addDocumentListenerToEnableAddGenreButton();
 
 		pack();
+	}
+
+	private void addDocumentListenerToEnableAddGenreButton() {
+		javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+			@Override
+			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+				updateAddGenreButton();
+			}
+
+			@Override
+			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+				updateAddGenreButton();
+			}
+
+			@Override
+			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+				updateAddGenreButton();
+			}
+
+			private void updateAddGenreButton() {
+				addGenreButton.setEnabled(
+						!genreIdTextBox.getText().trim().isEmpty() && !genreNameTextBox.getText().trim().isEmpty());
+			}
+		};
+		genreIdTextBox.getDocument().addDocumentListener(listener);
+		genreNameTextBox.getDocument().addDocumentListener(listener);
 	}
 
 	@Override
