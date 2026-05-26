@@ -2,6 +2,7 @@ package com.ahmad.sohail.moviewatchlist.mvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
@@ -63,6 +64,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
     }
 
     @Test
+    @GUITest
     public void testAddGenre() {
         window.textBox("genreIdTextBox").enterText("1");
         window.textBox("genreNameTextBox").enterText("Action");
@@ -72,6 +74,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
     }
 
     @Test
+    @GUITest
     public void testDeleteGenre() {
         genreRepository.save(new Genre("1", "Action"));
         GuiActionRunner.execute(() -> controller.allGenres());
@@ -81,6 +84,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
     }
 
     @Test
+    @GUITest
     public void testAddMovie() {
         window.textBox("movieIdTextBox").enterText("1");
         window.textBox("movieTitleTextBox").enterText("Inception");
@@ -91,6 +95,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
     }
 
     @Test
+    @GUITest
     public void testDeleteMovie() {
         movieRepository.save(new Movie("1", "Inception", 2010, "1"));
         GuiActionRunner.execute(() -> controller.allMovies());
