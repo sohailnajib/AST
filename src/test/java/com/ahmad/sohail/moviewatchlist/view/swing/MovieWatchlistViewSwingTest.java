@@ -161,8 +161,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Genre genre1 = new Genre("1", "Action");
 		Genre genre2 = new Genre("2", "Comedy");
 		GuiActionRunner.execute(() -> view.showAllGenres(java.util.Arrays.asList(genre1, genre2)));
-		String[] listContents = window.list("genreList").contents();
-		assertThat(listContents).containsExactly(genre1.toString(), genre2.toString());
+		assertThat(window.list("genreList").contents()).containsExactly(genre1.toString(), genre2.toString());
 	}
 
 	@Test
@@ -171,8 +170,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Movie movie1 = new Movie("1", "Inception", 2010, "1");
 		Movie movie2 = new Movie("2", "Interstellar", 2014, "1");
 		GuiActionRunner.execute(() -> view.showAllMovies(java.util.Arrays.asList(movie1, movie2)));
-		String[] listContents = window.list("movieList").contents();
-		assertThat(listContents).containsExactly(movie1.toString(), movie2.toString());
+		assertThat(window.list("movieList").contents()).containsExactly(movie1.toString(), movie2.toString());
 	}
 
 	@Test
@@ -180,8 +178,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testGenreAddedShouldAddGenreToList() {
 		Genre genre = new Genre("1", "Action");
 		GuiActionRunner.execute(() -> view.genreAdded(genre));
-		String[] listContents = window.list("genreList").contents();
-		assertThat(listContents).containsExactly(genre.toString());
+		assertThat(window.list("genreList").contents()).containsExactly(genre.toString());
 	}
 
 	@Test
@@ -194,8 +191,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			view.getGenreListModel().addElement(genre2);
 		});
 		GuiActionRunner.execute(() -> view.genreRemoved(genre1));
-		String[] listContents = window.list("genreList").contents();
-		assertThat(listContents).containsExactly(genre2.toString());
+		assertThat(window.list("genreList").contents()).containsExactly(genre2.toString());
 	}
 
 	@Test
@@ -203,8 +199,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testMovieAddedShouldAddMovieToList() {
 		Movie movie = new Movie("1", "Inception", 2010, "1");
 		GuiActionRunner.execute(() -> view.movieAdded(movie));
-		String[] listContents = window.list("movieList").contents();
-		assertThat(listContents).containsExactly(movie.toString());
+		assertThat(window.list("movieList").contents()).containsExactly(movie.toString());
 	}
 
 	@Test
@@ -217,8 +212,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			view.getMovieListModel().addElement(movie2);
 		});
 		GuiActionRunner.execute(() -> view.movieRemoved(movie1));
-		String[] listContents = window.list("movieList").contents();
-		assertThat(listContents).containsExactly(movie2.toString());
+		assertThat(window.list("movieList").contents()).containsExactly(movie2.toString());
 	}
 
 	@Test
@@ -255,7 +249,6 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("genreIdTextBox").enterText("1");
 		window.textBox("genreNameTextBox").enterText("Action");
 		window.button("addGenreButton").click();
-		robot().waitForIdle();
 		Mockito.verify(controller).newGenre(new Genre("1", "Action"));
 	}
 
@@ -265,9 +258,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Genre genre = new Genre("1", "Action");
 		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(genre));
 		window.list("genreList").selectItem(0);
-		robot().waitForIdle();
 		window.button("deleteGenreButton").click();
-		robot().waitForIdle();
 		Mockito.verify(controller).deleteGenre(genre);
 	}
 
@@ -278,7 +269,6 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
 		window.button("addMovieButton").click();
-		robot().waitForIdle();
 		Mockito.verify(controller).newMovie(new Movie("1", "Inception", 2010, "1"));
 	}
 
@@ -288,9 +278,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Movie movie = new Movie("1", "Inception", 2010, "1");
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		window.list("movieList").selectItem(0);
-		robot().waitForIdle();
 		window.button("deleteMovieButton").click();
-		robot().waitForIdle();
 		Mockito.verify(controller).deleteMovie(movie);
 	}
 
@@ -300,9 +288,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Movie movie = new Movie("1", "Inception", 2010, "1");
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		window.list("movieList").selectItem(0);
-		robot().waitForIdle();
 		window.button("watchedButton").click();
-		robot().waitForIdle();
 		Mockito.verify(controller).markMovieAsWatched(movie);
 	}
 
@@ -310,9 +296,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	@GUITest
 	public void testMovieUpdatedShouldUpdateMovieInList() {
 		Movie movie = new Movie("1", "Inception", 2010, "1");
-		GuiActionRunner.execute(() -> {
-			view.getMovieListModel().addElement(movie);
-		});
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		Movie updatedMovie = new Movie("1", "Inception", 2010, "1");
 		updatedMovie.setWatched(true);
 		GuiActionRunner.execute(() -> view.movieUpdated(updatedMovie));
@@ -326,5 +310,4 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> view.movieUpdated(movie));
 		assertThat(window.list("movieList").contents()).isEmpty();
 	}
-
 }
