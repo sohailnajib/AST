@@ -255,6 +255,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("genreIdTextBox").enterText("1");
 		window.textBox("genreNameTextBox").enterText("Action");
 		window.button("addGenreButton").click();
+		robot().waitForIdle();
 		Mockito.verify(controller).newGenre(new Genre("1", "Action"));
 	}
 
@@ -265,6 +266,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(genre));
 		window.list("genreList").selectItem(0);
 		window.button("deleteGenreButton").click();
+		robot().waitForIdle();
 		Mockito.verify(controller).deleteGenre(genre);
 	}
 
@@ -275,6 +277,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
 		window.button("addMovieButton").click();
+		robot().waitForIdle();
 		Mockito.verify(controller).newMovie(new Movie("1", "Inception", 2010, "1"));
 	}
 
@@ -285,6 +288,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		window.list("movieList").selectItem(0);
 		window.button("deleteMovieButton").click();
+		robot().waitForIdle();
 		Mockito.verify(controller).deleteMovie(movie);
 	}
 
@@ -295,6 +299,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		window.list("movieList").selectItem(0);
 		window.button("watchedButton").click();
+		robot().waitForIdle();
 		Mockito.verify(controller).markMovieAsWatched(movie);
 	}
 
