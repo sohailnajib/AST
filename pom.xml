@@ -2,7 +2,6 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.ahmad.sohail</groupId>
 	<artifactId>com.ahmad.sohail.moviewatchlist</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
@@ -12,7 +11,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
-		<argLine>-XX:+EnableDynamicAgentLoading</argLine>
 	</properties>
 
 	<dependencies>
@@ -29,6 +27,12 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>4.11.0</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>3.12.14</version>
@@ -37,18 +41,6 @@
 			<groupId>de.bwaldvogel</groupId>
 			<artifactId>mongo-java-server</artifactId>
 			<version>1.11.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.36</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-core</artifactId>
-			<version>4.11.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -63,7 +55,14 @@
 			<version>1.21.3</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.36</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -71,8 +70,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.5.5</version>
 					<configuration>
-						<argLine>@{argLine} --add-opens
-							java.base/java.util=ALL-UNNAMED</argLine>
+						<argLine>--add-opens java.base/java.util=ALL-UNNAMED</argLine>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -129,5 +127,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

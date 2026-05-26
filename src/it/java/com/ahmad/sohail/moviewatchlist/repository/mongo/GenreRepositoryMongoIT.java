@@ -21,8 +21,7 @@ public class GenreRepositoryMongoIT {
 	private static final String COLLECTION_NAME = "genre";
 
 	@ClassRule
-	public static final MongoDBContainer mongo = new MongoDBContainer("mongo:6.0.21");
-
+	public static final MongoDBContainer mongo = new MongoDBContainer("mongo:4.4.18");
 	private MongoClient client;
 	private GenreRepositoryMongo genreRepository;
 	private MongoCollection<Document> genreCollection;
