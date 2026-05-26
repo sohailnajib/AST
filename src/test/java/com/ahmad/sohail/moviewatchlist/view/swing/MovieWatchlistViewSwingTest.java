@@ -9,7 +9,9 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 
+import com.ahmad.sohail.moviewatchlist.controller.MovieWatchlistController;
 import com.ahmad.sohail.moviewatchlist.model.Genre;
 import com.ahmad.sohail.moviewatchlist.model.Movie;
 
@@ -18,10 +20,16 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 
 	private FrameFixture window;
 	private MovieWatchlistViewSwing view;
+	private MovieWatchlistController controller;
 
 	@Override
 	protected void onSetUp() {
-		view = GuiActionRunner.execute(() -> new MovieWatchlistViewSwing());
+		controller = Mockito.mock(MovieWatchlistController.class);
+		view = GuiActionRunner.execute(() -> {
+			MovieWatchlistViewSwing v = new MovieWatchlistViewSwing();
+			v.setController(controller);
+			return v;
+		});
 		window = new FrameFixture(robot(), view);
 		window.show();
 	}
@@ -239,6 +247,55 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			view.movieAdded(new Movie("2", "Interstellar", 2014, "1"));
 		});
 		window.label("errorMessageLabel").requireText(" ");
+	}
+
+	@Test
+	@GUITest
+	public void testAddGenreButtonShouldDelegateToController() {
+		window.textBox("genreIdTextBox").enterText("1");
+		window.textBox("genreNameTextBox").enterText("Action");
+		window.button("addGenreButton").click();
+		Mockito.verify(controller).newGenre(new Genre("1", "Action"));
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteGenreButtonShouldDelegateToController() {
+		Genre genre = new Genre("1", "Action");
+		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(genre));
+		window.list("genreList").selectItem(0);
+		window.button("deleteGenreButton").click();
+		Mockito.verify(controller).deleteGenre(genre);
+	}
+
+	@Test
+	@GUITest
+	public void testAddMovieButtonShouldDelegateToController() {
+		window.textBox("movieIdTextBox").enterText("1");
+		window.textBox("movieTitleTextBox").enterText("Inception");
+		window.textBox("movieYearTextBox").enterText("2010");
+		window.button("addMovieButton").click();
+		Mockito.verify(controller).newMovie(new Movie("1", "Inception", 2010, "1"));
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteMovieButtonShouldDelegateToController() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
+		window.list("movieList").selectItem(0);
+		window.button("deleteMovieButton").click();
+		Mockito.verify(controller).deleteMovie(movie);
+	}
+
+	@Test
+	@GUITest
+	public void testWatchedButtonShouldDelegateToController() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
+		window.list("movieList").selectItem(0);
+		window.button("watchedButton").click();
+		Mockito.verify(controller).markMovieAsWatched(movie);
 	}
 
 }
