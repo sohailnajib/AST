@@ -265,6 +265,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Genre genre = new Genre("1", "Action");
 		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(genre));
 		window.list("genreList").selectItem(0);
+		robot().waitForIdle();
 		window.button("deleteGenreButton").click();
 		robot().waitForIdle();
 		Mockito.verify(controller).deleteGenre(genre);
@@ -287,6 +288,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Movie movie = new Movie("1", "Inception", 2010, "1");
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		window.list("movieList").selectItem(0);
+		robot().waitForIdle();
 		window.button("deleteMovieButton").click();
 		robot().waitForIdle();
 		Mockito.verify(controller).deleteMovie(movie);
@@ -298,6 +300,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Movie movie = new Movie("1", "Inception", 2010, "1");
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(movie));
 		window.list("movieList").selectItem(0);
+		robot().waitForIdle();
 		window.button("watchedButton").click();
 		robot().waitForIdle();
 		Mockito.verify(controller).markMovieAsWatched(movie);
