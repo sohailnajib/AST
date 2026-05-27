@@ -38,7 +38,7 @@ jobs:
 
       - name: Set Maven Coveralls Options
         run: |
-          echo "COVERALLS_OPTIONS=-Pcoveralls coveralls:report" >> $GITHUB_ENV
+          echo "COVERALLS_OPTIONS=-Pcoveralls,pit-mutation-testing coveralls:report" >> $GITHUB_ENV
         if: ${{ env.COVERALLS_REPO_TOKEN != '' }}
 
       - name: Build with Maven
