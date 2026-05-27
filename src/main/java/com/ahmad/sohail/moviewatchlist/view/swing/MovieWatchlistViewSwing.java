@@ -160,13 +160,13 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 
 	private void addListSelectionListenerToGenreList() {
 		genreList.addListSelectionListener(e -> {
-			deleteGenreButton.setEnabled(genreList.getSelectedValue() != null);
+			deleteGenreButton.setEnabled(genreList.getSelectedIndex() != -1);
 		});
 	}
 
 	private void addListSelectionListenerToMovieList() {
 		movieList.addListSelectionListener(e -> {
-			boolean movieSelected = movieList.getSelectedValue() != null;
+			boolean movieSelected = movieList.getSelectedIndex() != -1;
 			deleteMovieButton.setEnabled(movieSelected);
 			watchedButton.setEnabled(movieSelected);
 		});
