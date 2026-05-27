@@ -290,7 +290,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			view.showError("error", new Movie("1", "Inception", 2010, "1"));
 			view.movieAdded(new Movie("2", "Interstellar", 2014, "1"));
 		});
+
 		window.label("errorMessageLabel").requireText(" ");
+		assertThat(window.label("errorMessageLabel").target().getText()).isEqualTo(" ");
 	}
 
 	@Test
