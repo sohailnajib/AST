@@ -39,6 +39,7 @@ public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
 				return "Movie Watchlist".equals(frame.getTitle()) && frame.isShowing();
 			}
 		}).using(robot());
+		window.resizeTo(new java.awt.Dimension(800, 900));
 	}
 
 	@Test
