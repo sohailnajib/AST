@@ -362,4 +362,35 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		GuiActionRunner.execute(() -> view.movieUpdated(movie));
 		assertThat(window.list("movieList").contents()).isEmpty();
 	}
+
+	@Test
+	@GUITest
+	public void testDeleteGenreButtonShouldNotDelegateWhenNoGenreIsSelected() {
+		GuiActionRunner.execute(() -> window.button("deleteGenreButton").target().setEnabled(true));
+
+		window.button("deleteGenreButton").click();
+
+		Mockito.verifyNoInteractions(controller);
+	}
+
+	@Test
+	@GUITest
+	public void testDeleteMovieButtonShouldNotDelegateWhenNoMovieIsSelected() {
+		GuiActionRunner.execute(() -> window.button("deleteMovieButton").target().setEnabled(true));
+
+		window.button("deleteMovieButton").click();
+
+		Mockito.verifyNoInteractions(controller);
+	}
+
+	@Test
+	@GUITest
+	public void testWatchedButtonShouldNotDelegateWhenNoMovieIsSelected() {
+		GuiActionRunner.execute(() -> window.button("watchedButton").target().setEnabled(true));
+
+		window.button("watchedButton").click();
+
+		Mockito.verifyNoInteractions(controller);
+	}
+
 }
