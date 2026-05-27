@@ -31,7 +31,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			return v;
 		});
 		window = new FrameFixture(robot(), view);
-		window.show(new java.awt.Dimension(500, 900)); 
+		window.show(new java.awt.Dimension(500, 900));
 	}
 
 	@Test
@@ -40,16 +40,36 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabel");
 		window.list("genreList");
 		window.list("movieList");
+
 		window.button("addGenreButton").requireDisabled();
+		assertThat(window.button("addGenreButton").target().isEnabled()).isFalse();
+
 		window.button("deleteGenreButton").requireDisabled();
+		assertThat(window.button("deleteGenreButton").target().isEnabled()).isFalse();
+
 		window.button("addMovieButton").requireDisabled();
+		assertThat(window.button("addMovieButton").target().isEnabled()).isFalse();
+
 		window.button("deleteMovieButton").requireDisabled();
+		assertThat(window.button("deleteMovieButton").target().isEnabled()).isFalse();
+
 		window.button("watchedButton").requireDisabled();
+		assertThat(window.button("watchedButton").target().isEnabled()).isFalse();
+
 		window.textBox("genreIdTextBox").requireEnabled();
+		assertThat(window.textBox("genreIdTextBox").target().isEnabled()).isTrue();
+
 		window.textBox("genreNameTextBox").requireEnabled();
+		assertThat(window.textBox("genreNameTextBox").target().isEnabled()).isTrue();
+
 		window.textBox("movieIdTextBox").requireEnabled();
+		assertThat(window.textBox("movieIdTextBox").target().isEnabled()).isTrue();
+
 		window.textBox("movieTitleTextBox").requireEnabled();
+		assertThat(window.textBox("movieTitleTextBox").target().isEnabled()).isTrue();
+
 		window.textBox("movieYearTextBox").requireEnabled();
+		assertThat(window.textBox("movieYearTextBox").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -57,21 +77,27 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testAddGenreButtonShouldBeEnabledWhenGenreIdAndNameAreNotEmpty() {
 		window.textBox("genreIdTextBox").enterText("1");
 		window.textBox("genreNameTextBox").enterText("Action");
+
 		window.button("addGenreButton").requireEnabled();
+		assertThat(window.button("addGenreButton").target().isEnabled()).isTrue();
 	}
 
 	@Test
 	@GUITest
 	public void testAddGenreButtonShouldBeDisabledWhenGenreIdIsEmpty() {
 		window.textBox("genreNameTextBox").enterText("Action");
+
 		window.button("addGenreButton").requireDisabled();
+		assertThat(window.button("addGenreButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
 	@GUITest
 	public void testAddGenreButtonShouldBeDisabledWhenGenreNameIsEmpty() {
 		window.textBox("genreIdTextBox").enterText("1");
+
 		window.button("addGenreButton").requireDisabled();
+		assertThat(window.button("addGenreButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -80,7 +106,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
+
 		window.button("addMovieButton").requireEnabled();
+		assertThat(window.button("addMovieButton").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -88,7 +116,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testAddMovieButtonShouldBeDisabledWhenMovieIdIsEmpty() {
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
+
 		window.button("addMovieButton").requireDisabled();
+		assertThat(window.button("addMovieButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -96,7 +126,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testAddMovieButtonShouldBeDisabledWhenMovieTitleIsEmpty() {
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieYearTextBox").enterText("2010");
+
 		window.button("addMovieButton").requireDisabled();
+		assertThat(window.button("addMovieButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -104,7 +136,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testAddMovieButtonShouldBeDisabledWhenMovieYearIsEmpty() {
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
+
 		window.button("addMovieButton").requireDisabled();
+		assertThat(window.button("addMovieButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -112,7 +146,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testDeleteGenreButtonShouldBeEnabledWhenAGenreIsSelected() {
 		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(new Genre("1", "Action")));
 		window.list("genreList").selectItem(0);
+
 		window.button("deleteGenreButton").requireEnabled();
+		assertThat(window.button("deleteGenreButton").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -120,7 +156,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testDeleteGenreButtonShouldBeDisabledWhenNoGenreIsSelected() {
 		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(new Genre("1", "Action")));
 		window.list("genreList").clearSelection();
+
 		window.button("deleteGenreButton").requireDisabled();
+		assertThat(window.button("deleteGenreButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -128,7 +166,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testDeleteMovieButtonShouldBeEnabledWhenAMovieIsSelected() {
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
 		window.list("movieList").selectItem(0);
+
 		window.button("deleteMovieButton").requireEnabled();
+		assertThat(window.button("deleteMovieButton").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -136,7 +176,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testDeleteMovieButtonShouldBeDisabledWhenNoMovieIsSelected() {
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
 		window.list("movieList").clearSelection();
+
 		window.button("deleteMovieButton").requireDisabled();
+		assertThat(window.button("deleteMovieButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -144,7 +186,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testWatchedButtonShouldBeEnabledWhenAMovieIsSelected() {
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
 		window.list("movieList").selectItem(0);
+
 		window.button("watchedButton").requireEnabled();
+		assertThat(window.button("watchedButton").target().isEnabled()).isTrue();
 	}
 
 	@Test
@@ -152,7 +196,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testWatchedButtonShouldBeDisabledWhenNoMovieIsSelected() {
 		GuiActionRunner.execute(() -> view.getMovieListModel().addElement(new Movie("1", "Inception", 2010, "1")));
 		window.list("movieList").clearSelection();
+
 		window.button("watchedButton").requireDisabled();
+		assertThat(window.button("watchedButton").target().isEnabled()).isFalse();
 	}
 
 	@Test
@@ -220,7 +266,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	public void testShowErrorShouldShowMessageInErrorLabel() {
 		Genre genre = new Genre("1", "Action");
 		GuiActionRunner.execute(() -> view.showError("error message", genre));
+
 		window.label("errorMessageLabel").requireText("error message: " + genre);
+		assertThat(window.label("errorMessageLabel").target().getText()).isEqualTo("error message: " + genre);
 	}
 
 	@Test
@@ -230,7 +278,9 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			view.showError("error", new Genre("1", "Action"));
 			view.genreAdded(new Genre("2", "Comedy"));
 		});
+
 		window.label("errorMessageLabel").requireText(" ");
+		assertThat(window.label("errorMessageLabel").target().getText()).isEqualTo(" ");
 	}
 
 	@Test

@@ -39,7 +39,7 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 
 	private JLabel errorMessageLabel;
 
-	private MovieWatchlistController controller;
+	private transient MovieWatchlistController controller;
 
 	public void setController(MovieWatchlistController controller) {
 		this.controller = controller;
@@ -159,9 +159,7 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 	}
 
 	private void addListSelectionListenerToGenreList() {
-		genreList.addListSelectionListener(e -> {
-			deleteGenreButton.setEnabled(genreList.getSelectedIndex() != -1);
-		});
+		genreList.addListSelectionListener(e -> deleteGenreButton.setEnabled(genreList.getSelectedIndex() != -1));
 	}
 
 	private void addListSelectionListenerToMovieList() {
@@ -228,12 +226,12 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 
 	@Override
 	public void showAllGenres(List<Genre> genres) {
-		genres.stream().forEach(genreListModel::addElement);
+		genres.forEach(genreListModel::addElement);
 	}
 
 	@Override
 	public void showAllMovies(List<Movie> movies) {
-		movies.stream().forEach(movieListModel::addElement);
+		movies.forEach(movieListModel::addElement);
 	}
 
 	@Override

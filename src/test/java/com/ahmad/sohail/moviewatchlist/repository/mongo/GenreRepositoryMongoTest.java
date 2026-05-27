@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.net.InetSocketAddress;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.bson.Document;
@@ -97,7 +96,7 @@ public class GenreRepositoryMongoTest {
 
 	private List<Genre> readAllGenresFromDatabase() {
 		return StreamSupport.stream(genreCollection.find().spliterator(), false)
-				.map(d -> new Genre("" + d.get("id"), "" + d.get("name"))).collect(Collectors.toList());
+				.map(d -> new Genre("" + d.get("id"), "" + d.get("name"))).toList();
 	}
 
 	@Test

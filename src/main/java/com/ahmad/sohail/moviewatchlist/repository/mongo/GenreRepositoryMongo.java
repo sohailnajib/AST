@@ -1,7 +1,6 @@
 package com.ahmad.sohail.moviewatchlist.repository.mongo;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import org.bson.Document;
@@ -27,7 +26,7 @@ public class GenreRepositoryMongo implements GenreRepository {
 	public List<Genre> findAll() {
 		return StreamSupport
 				.stream(client.getDatabase(dbName).getCollection(collectionName).find().spliterator(), false)
-				.map(d -> new Genre("" + d.get("id"), "" + d.get("name"))).collect(Collectors.toList());
+				.map(d -> new Genre("" + d.get("id"), "" + d.get("name"))).toList();
 	}
 
 	@Override

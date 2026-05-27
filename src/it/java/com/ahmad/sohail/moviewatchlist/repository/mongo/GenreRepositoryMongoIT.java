@@ -57,7 +57,7 @@ public class GenreRepositoryMongoIT {
 	@Test
 	public void testSave() {
 		genreRepository.save(new Genre("1", "Action"));
-		assertThat(genreCollection.find().first().get("name")).isEqualTo("Action");
+		assertThat(genreCollection.find().first()).containsEntry("name", "Action");
 	}
 
 	@Test
