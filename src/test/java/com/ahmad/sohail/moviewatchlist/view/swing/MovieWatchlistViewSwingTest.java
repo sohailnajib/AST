@@ -400,4 +400,15 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 		Mockito.verifyNoInteractions(controller);
 	}
 
+	@Test
+	@GUITest
+	public void testAddMovieButtonShouldBeDisabledWhenNoGenreIsSelected() {
+		window.textBox("movieIdTextBox").enterText("1");
+		window.textBox("movieTitleTextBox").enterText("Inception");
+		window.textBox("movieYearTextBox").enterText("2010");
+
+		window.button("addMovieButton").requireDisabled();
+		assertThat(window.button("addMovieButton").target().isEnabled()).isFalse();
+	}
+
 }

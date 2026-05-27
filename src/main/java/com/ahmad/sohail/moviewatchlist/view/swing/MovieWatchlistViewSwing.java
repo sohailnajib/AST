@@ -44,7 +44,7 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 
 	private transient MovieWatchlistController controller;
 
-	private Genre selectedGenre;
+	private transient Genre selectedGenre;
 
 	public void setController(MovieWatchlistController controller) {
 		this.controller = controller;
@@ -142,9 +142,10 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 				e -> controller.newGenre(new Genre(genreIdTextBox.getText(), genreNameTextBox.getText())));
 
 		deleteGenreButton.addActionListener(e -> {
-			Genre selectedGenre = genreList.getSelectedValue();
-			if (selectedGenre != null)
-				controller.deleteGenre(selectedGenre);
+			Genre genreToDelete = genreList.getSelectedValue();
+
+			if (genreToDelete != null)
+				controller.deleteGenre(genreToDelete);
 		});
 
 		addMovieButton.addActionListener(e -> controller.newMovie(new Movie(movieIdTextBox.getText(),
