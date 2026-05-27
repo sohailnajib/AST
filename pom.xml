@@ -129,6 +129,27 @@
 					<artifactId>sonar-maven-plugin</artifactId>
 					<version>5.1.0.4751</version>
 				</plugin>
+				<plugin>
+					<groupId>org.pitest</groupId>
+					<artifactId>pitest-maven</artifactId>
+					<version>1.17.4</version>
+					<configuration>
+						<targetClasses>
+							<param>com.ahmad.sohail.moviewatchlist.controller.*</param>
+							<param>
+								com.ahmad.sohail.moviewatchlist.repository.mongo.*</param>
+						</targetClasses>
+						<targetTests>
+							<param>com.ahmad.sohail.moviewatchlist.controller.*</param>
+							<param>
+								com.ahmad.sohail.moviewatchlist.repository.mongo.*</param>
+						</targetTests>
+						<mutators>
+							<mutator>STRONGER</mutator>
+						</mutators>
+						<mutationThreshold>100</mutationThreshold>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -187,6 +208,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 	<profiles>
 		<profile>
 			<id>jacoco</id>
@@ -211,6 +233,26 @@
 					<plugin>
 						<groupId>org.eluder.coveralls</groupId>
 						<artifactId>coveralls-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>pit-mutation-testing</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>mutationCoverage</goal>
+								</goals>
+								<phase>verify</phase>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>

@@ -1,5 +1,6 @@
 package com.ahmad.sohail.moviewatchlist.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.ignoreStubs;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
@@ -148,5 +149,13 @@ public class MovieWatchlistControllerTest {
 		controller.markMovieAsWatched(movie);
 		verify(view).showError("No existing movie with id 1", movie);
 		verifyNoMoreInteractions(ignoreStubs(movieRepository));
+	}
+
+	@Test
+	public void testMarkMovieAsWatchedShouldSetWatchedToTrue() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		when(movieRepository.findById("1")).thenReturn(movie);
+		controller.markMovieAsWatched(movie);
+		assertThat(movie.isWatched()).isTrue();
 	}
 }
