@@ -33,16 +33,16 @@ Movie Watchlist Manager is a Java Swing desktop application for managing a perso
 
 ## Running the Application
 
-Start a MongoDB container:  
+### Start a MongoDB container:
 docker run --name movie-watchlist-mongo -d -p 27017:27017 mongo:4.4.18
 
-If the container already exists, start it with:  
+### If the container already exists, start it with:  
 docker start movie-watchlist-mongo
 
-Build the JAR:  
+### Build the JAR:  
 mvn clean package -DskipTests
 
-Run the application:  
+### Run the application:  
 java -jar target/com.ahmad.sohail.moviewatchlist-0.0.1-SNAPSHOT-jar-with-dependencies.jar \
   --mongo-host=localhost \
   --mongo-port=27017 \
@@ -50,20 +50,20 @@ java -jar target/com.ahmad.sohail.moviewatchlist-0.0.1-SNAPSHOT-jar-with-depende
   --genre-collection=genre \
   --movie-collection=movie
 
-Stop MongoDB after use:  
+### Stop MongoDB after use:  
 docker stop movie-watchlist-mongo
 
 ## Running the Tests
 
 Testcontainers handles the MongoDB container automatically for integration and E2E tests — no manual Docker step needed.
 
-Run all tests:  
+### Run all tests:  
 mvn verify
 
-With coverage report:  
+### With coverage report:  
 mvn verify -Pjacoco
 
-With mutation testing:   
+### With mutation testing:   
 mvn verify -Ppit-mutation-testing
 
 ## Technologies
