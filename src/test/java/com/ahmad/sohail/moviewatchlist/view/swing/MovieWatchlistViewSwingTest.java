@@ -31,7 +31,7 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 			return v;
 		});
 		window = new FrameFixture(robot(), view);
-		window.show();
+		window.show(new java.awt.Dimension(500, 900)); 
 	}
 
 	@Test
