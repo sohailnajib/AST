@@ -41,10 +41,6 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 
 	private MovieWatchlistController controller;
 
-	public MovieWatchlistController getController() {
-		return controller;
-	}
-
 	public void setController(MovieWatchlistController controller) {
 		this.controller = controller;
 	}
@@ -140,25 +136,37 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 		addGenreButton.addActionListener(
 				e -> controller.newGenre(new Genre(genreIdTextBox.getText(), genreNameTextBox.getText())));
 
-		deleteGenreButton.addActionListener(e -> controller.deleteGenre(genreList.getSelectedValue()));
+		deleteGenreButton.addActionListener(e -> {
+			Genre selectedGenre = genreList.getSelectedValue();
+			if (selectedGenre != null)
+				controller.deleteGenre(selectedGenre);
+		});
 
 		addMovieButton.addActionListener(e -> controller.newMovie(new Movie(movieIdTextBox.getText(),
 				movieTitleTextBox.getText(), Integer.parseInt(movieYearTextBox.getText()), "")));
 
-		deleteMovieButton.addActionListener(e -> controller.deleteMovie(movieList.getSelectedValue()));
+		deleteMovieButton.addActionListener(e -> {
+			Movie selectedMovie = movieList.getSelectedValue();
+			if (selectedMovie != null)
+				controller.deleteMovie(selectedMovie);
+		});
 
-		watchedButton.addActionListener(e -> controller.markMovieAsWatched(movieList.getSelectedValue()));
+		watchedButton.addActionListener(e -> {
+			Movie selectedMovie = movieList.getSelectedValue();
+			if (selectedMovie != null)
+				controller.markMovieAsWatched(selectedMovie);
+		});
 	}
 
 	private void addListSelectionListenerToGenreList() {
 		genreList.addListSelectionListener(e -> {
-			deleteGenreButton.setEnabled(genreList.getSelectedValue() != null);
+			deleteGenreButton.setEnabled(genreList.getSelectedIndex() != -1);
 		});
 	}
 
 	private void addListSelectionListenerToMovieList() {
 		movieList.addListSelectionListener(e -> {
-			boolean movieSelected = movieList.getSelectedValue() != null;
+			boolean movieSelected = movieList.getSelectedIndex() != -1;
 			deleteMovieButton.setEnabled(movieSelected);
 			watchedButton.setEnabled(movieSelected);
 		});

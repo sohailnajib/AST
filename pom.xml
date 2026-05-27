@@ -11,6 +11,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>21</maven.compiler.source>
 		<maven.compiler.target>21</maven.compiler.target>
+		<argLine></argLine>
+		<sonar.organization>sohailnajib</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.projectKey>sohailnajib_AST</sonar.projectKey>
+		<sonar.coverage.exclusions>
+			**/model/**,
+			**/app/**
+			**/MovieWatchlistViewSwing$*
+		</sonar.coverage.exclusions>
 	</properties>
 
 	<dependencies>
@@ -61,6 +70,12 @@
 			<version>1.7.36</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.awaitility</groupId>
+			<artifactId>awaitility</artifactId>
+			<version>4.0.2</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -70,8 +85,42 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<version>3.5.5</version>
 					<configuration>
-						<argLine>--add-opens java.base/java.util=ALL-UNNAMED</argLine>
+						<argLine>@{argLine} --add-opens
+							java.base/java.util=ALL-UNNAMED</argLine>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>0.8.12</version>
+					<configuration>
+						<excludes>
+							<exclude>**/model/*.*</exclude>
+							<exclude>**/app/**</exclude>
+							<exclude>**/MovieWatchlistViewSwing$*.class</exclude>
+						</excludes>
+					</configuration>
+					<executions>
+						<execution>
+							<goals>
+								<goal>prepare-agent</goal>
+								<goal>report</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.github.hazendaz.maven</groupId>
+					<artifactId>coveralls-maven-plugin</artifactId>
+					<version>5.0.0</version>
+					<configuration>
+						<repoToken>${env.COVERALLS_TOKEN}</repoToken>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.sonarsource.scanner.maven</groupId>
+					<artifactId>sonar-maven-plugin</artifactId>
+					<version>5.1.0.4751</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -101,7 +150,8 @@
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<version>3.5.3</version>
 				<configuration>
-					<argLine>--add-opens java.base/java.util=ALL-UNNAMED</argLine>
+					<argLine>@{argLine} --add-opens
+						java.base/java.util=ALL-UNNAMED</argLine>
 				</configuration>
 				<executions>
 					<execution>
@@ -130,4 +180,42 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>jacoco</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>coveralls</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+						<artifactId>jacoco-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>com.github.hazendaz.maven</groupId>
+						<artifactId>coveralls-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>verify</phase>
+								<goals>
+									<goal>report</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
