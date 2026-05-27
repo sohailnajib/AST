@@ -13,6 +13,7 @@ import com.mongodb.client.model.ReplaceOptions;
 
 public class MovieRepositoryMongo implements MovieRepository {
 
+	private static final String WATCHED = "watched";
 	private static final String GENRE_ID = "genreId";
 	private static final String TITLE = "title";
 	private MongoClient client;
@@ -30,7 +31,7 @@ public class MovieRepositoryMongo implements MovieRepository {
 		return StreamSupport
 				.stream(client.getDatabase(dbName).getCollection(collectionName).find().spliterator(), false).map(d -> {
 					Movie m = new Movie("" + d.get("id"), "" + d.get(TITLE), (int) d.get("year"), "" + d.get(GENRE_ID));
-					m.setWatched((boolean) d.get("watched"));
+					m.setWatched((boolean) d.get(WATCHED));
 					return m;
 				}).toList();
 	}
@@ -40,7 +41,7 @@ public class MovieRepositoryMongo implements MovieRepository {
 		Document d = client.getDatabase(dbName).getCollection(collectionName).find(Filters.eq("id", id)).first();
 		if (d != null) {
 			Movie m = new Movie("" + d.get("id"), "" + d.get(TITLE), (int) d.get("year"), "" + d.get(GENRE_ID));
-			m.setWatched((boolean) d.get("watched"));
+			m.setWatched((boolean) d.get(WATCHED));
 			return m;
 		}
 		return null;
@@ -50,7 +51,7 @@ public class MovieRepositoryMongo implements MovieRepository {
 	public void save(Movie movie) {
 		Document document = new Document().append("id", movie.getId()).append(TITLE, movie.getTitle())
 				.append("year", movie.getYear()).append(GENRE_ID, movie.getGenreId())
-				.append("watched", movie.isWatched());
+				.append(WATCHED, movie.isWatched());
 
 		client.getDatabase(dbName).getCollection(collectionName).replaceOne(Filters.eq("id", movie.getId()), document,
 				new ReplaceOptions().upsert(true));
