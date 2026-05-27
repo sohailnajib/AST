@@ -23,41 +23,53 @@ Project for the Automated Software Testing course @ University of Florence
 
 ## Description
 
-**Movie Watchlist Manager** is a Java Swing desktop application for managing a personal movie watchlist. Users can add genres, add movies assigned to genres, mark movies as watched, and delete both genres and movies.
+Movie Watchlist Manager is a Java Swing desktop application for managing a personal movie watchlist organized by genre. You can add and delete genres, add and delete movies assigned to a genre, and mark movies as watched.
 
-## Features
+## Requirements
 
-- Add and delete genres
-- Add and delete movies
-- Mark movies as watched
-- Simple and clean Swing GUI
+- Java 21
+- Maven
+- Docker
 
-## Technologies
+## Running the Application
 
-- Java 21, Eclipse, Maven
-- JUnit 4, AssertJ, Mockito
-- AssertJ Swing (UI testing)
-- MongoDB with Testcontainers
-- JaCoCo, Coveralls (code coverage)
-- PIT (mutation testing)
-- SonarCloud (code quality)
-- GitHub Actions (CI)
+Start a MongoDB container:
+docker run --name movie-watchlist-mongo -d -p 27017:27017 mongo:4.4.18
 
-## Running the application
+If the container already exists, start it with:
+docker start movie-watchlist-mongo
 
-Start a MongoDB instance then run:
-target/com.ahmad.sohail.moviewatchlist-0.0.1-SNAPSHOT-jar-with-dependencies.jar
---mongo-host=localhost 
---mongo-port=27017 
---db-name=moviewatchlist 
---genre-collection=genre 
---movie-collection=movie
+Build the JAR:
+mvn clean package -DskipTests
 
-## Running the tests
+Run the application:
+java -jar target/com.ahmad.sohail.moviewatchlist-0.0.1-SNAPSHOT-jar-with-dependencies.jar \
+  --mongo-host=localhost \
+  --mongo-port=27017 \
+  --db-name=moviewatchlist \
+  --genre-collection=genre \
+  --movie-collection=movie
+
+Stop MongoDB after use:
+docker stop movie-watchlist-mongo
+
+## Running the Tests
+
+Testcontainers handles the MongoDB container automatically for integration and E2E tests — no manual Docker step needed.
+
+Run all tests:
 mvn verify
 
-With coverage:
+With coverage report:
 mvn verify -Pjacoco
 
 With mutation testing:
 mvn verify -Ppit-mutation-testing
+
+## Technologies
+
+- Java 21, Eclipse, Maven
+- JUnit 4, AssertJ, AssertJ Swing, Mockito, Awaitility
+- MongoDB, mongo-java-server, Testcontainers
+- JaCoCo, Coveralls, PIT mutation testing
+- SonarCloud, GitHub Actions, Docker
