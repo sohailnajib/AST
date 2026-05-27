@@ -56,7 +56,7 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 			view.setController(controller);
 			return view;
 		}));
-		window.show();
+		window.show(new java.awt.Dimension(800, 900));
 	}
 
 	@Override
