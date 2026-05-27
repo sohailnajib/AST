@@ -19,7 +19,6 @@ Project for the Automated Software Testing course @ University of Florence
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=sohailnajib_AST&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=sohailnajib_AST)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=sohailnajib_AST&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=sohailnajib_AST)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=sohailnajib_AST&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=sohailnajib_AST)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=sohailnajib_AST&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=sohailnajib_AST)
 
 ## Description
 
