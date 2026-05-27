@@ -108,4 +108,18 @@ public class MovieRepositoryMongoTest {
 				.map(d -> new Movie("" + d.get("id"), "" + d.get("title"), (int) d.get("year"), "" + d.get("genreId")))
 				.toList();
 	}
+
+	@Test
+	public void testFindByIdReturnsMovieWithWatchedTrue() {
+		movieCollection.insertOne(new Document().append("id", "1").append("title", "Inception").append("year", 2010)
+				.append("genreId", "1").append("watched", true));
+		assertThat(movieRepository.findById("1").isWatched()).isTrue();
+	}
+
+	@Test
+	public void testFindAllReturnsMoviesWithCorrectWatchedField() {
+		movieCollection.insertOne(new Document().append("id", "1").append("title", "Inception").append("year", 2010)
+				.append("genreId", "1").append("watched", true));
+		assertThat(movieRepository.findAll().get(0).isWatched()).isTrue();
+	}
 }

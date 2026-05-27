@@ -79,4 +79,12 @@ public class MovieRepositoryMongoIT {
 		movieRepository.delete("1");
 		assertThat(movieCollection.countDocuments()).isZero();
 	}
+
+	@Test
+	public void testSaveAndFindByIdPreservesWatchedField() {
+		Movie movie = new Movie("1", "Inception", 2010, "1");
+		movie.setWatched(true);
+		movieRepository.save(movie);
+		assertThat(movieRepository.findById("1").isWatched()).isTrue();
+	}
 }
