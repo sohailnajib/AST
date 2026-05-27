@@ -120,9 +120,6 @@
 							<version>2.3.1</version>
 						</dependency>
 					</dependencies>
-					<configuration>
-						<repoToken>${env.COVERALLS_REPO_TOKEN}</repoToken>
-					</configuration>
 				</plugin>
 				<plugin>
 					<groupId>org.sonarsource.scanner.maven</groupId>
@@ -187,7 +184,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
 	<profiles>
 		<profile>
 			<id>jacoco</id>
@@ -200,6 +196,7 @@
 				</plugins>
 			</build>
 		</profile>
+
 		<profile>
 			<id>coveralls</id>
 			<build>
@@ -211,17 +208,6 @@
 					<plugin>
 						<groupId>org.eluder.coveralls</groupId>
 						<artifactId>coveralls-maven-plugin</artifactId>
-						<version>4.3.0</version>
-						<dependencies>
-							<dependency>
-								<groupId>javax.xml.bind</groupId>
-								<artifactId>jaxb-api</artifactId>
-								<version>2.3.1</version>
-							</dependency>
-						</dependencies>
-						<configuration>
-							<repoToken>${env.COVERALLS_REPO_TOKEN}</repoToken>
-						</configuration>
 					</plugin>
 				</plugins>
 			</build>
