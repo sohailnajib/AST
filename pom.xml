@@ -20,6 +20,9 @@
 			**/app/**,
 			**/MovieWatchlistViewSwing$*
 		</sonar.coverage.exclusions>
+		<sonar.cpd.exclusions>
+			**/model/**
+		</sonar.cpd.exclusions>
 	</properties>
 
 	<dependencies>
