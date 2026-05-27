@@ -9,6 +9,7 @@ import com.ahmad.sohail.moviewatchlist.model.Movie;
 import com.ahmad.sohail.moviewatchlist.repository.MovieRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
 
 public class MovieRepositoryMongo implements MovieRepository {
 
@@ -42,10 +43,12 @@ public class MovieRepositoryMongo implements MovieRepository {
 
 	@Override
 	public void save(Movie movie) {
-		client.getDatabase(dbName).getCollection(collectionName)
-				.insertOne(new Document().append("id", movie.getId()).append(TITLE, movie.getTitle())
-						.append("year", movie.getYear()).append(GENRE_ID, movie.getGenreId())
-						.append("watched", movie.isWatched()));
+		Document document = new Document().append("id", movie.getId()).append(TITLE, movie.getTitle())
+				.append("year", movie.getYear()).append(GENRE_ID, movie.getGenreId())
+				.append("watched", movie.isWatched());
+
+		client.getDatabase(dbName).getCollection(collectionName).replaceOne(Filters.eq("id", movie.getId()), document,
+				new ReplaceOptions().upsert(true));
 	}
 
 	@Override

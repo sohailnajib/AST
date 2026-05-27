@@ -46,7 +46,7 @@ Project for the Automated Software Testing course @ University of Florence
 ## Running the application
 
 Start a MongoDB instance then run:
-java -jar target/com.ahmad.sohail.moviewatchlist-0.0.1-SNAPSHOT.jar 
+target/com.ahmad.sohail.moviewatchlist-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 --mongo-host=localhost 
 --mongo-port=27017 
 --db-name=moviewatchlist 

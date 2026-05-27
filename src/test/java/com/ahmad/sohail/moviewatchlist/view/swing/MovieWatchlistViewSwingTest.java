@@ -103,6 +103,8 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testAddMovieButtonShouldBeEnabledWhenMovieIdTitleAndYearAreNotEmpty() {
+		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(new Genre("1", "Action")));
+		window.list("genreList").selectItem(0);
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
@@ -317,10 +319,15 @@ public class MovieWatchlistViewSwingTest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testAddMovieButtonShouldDelegateToController() {
+		Genre genre = new Genre("1", "Action");
+		GuiActionRunner.execute(() -> view.getGenreListModel().addElement(genre));
+		window.list("genreList").selectItem(0);
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
+
 		window.button("addMovieButton").click();
+
 		Mockito.verify(controller).newMovie(new Movie("1", "Inception", 2010, "1"));
 	}
 

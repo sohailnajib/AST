@@ -86,11 +86,16 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testAddMovie() {
+		genreRepository.save(new Genre("1", "Action"));
+		GuiActionRunner.execute(() -> controller.allGenres());
+		window.list("genreList").selectItem(0);
+
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
 		window.button(JButtonMatcher.withText("Add Movie")).click();
-		assertThat(movieRepository.findById("1")).isEqualTo(new Movie("1", "Inception", 2010, ""));
+
+		assertThat(movieRepository.findById("1")).isEqualTo(new Movie("1", "Inception", 2010, "1"));
 	}
 
 	@Test

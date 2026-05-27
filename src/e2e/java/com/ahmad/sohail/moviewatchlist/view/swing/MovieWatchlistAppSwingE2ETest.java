@@ -1,7 +1,7 @@
 package com.ahmad.sohail.moviewatchlist.view.swing;
 
-import static org.assertj.swing.launcher.ApplicationLauncher.application;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.swing.launcher.ApplicationLauncher.application;
 
 import javax.swing.JFrame;
 
@@ -50,6 +50,8 @@ public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
 		window.list("genreList").requireItemCount(1);
 		assertThat(window.list("genreList").contents()).hasSize(1);
 
+		window.list("genreList").selectItem(0);
+
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
@@ -73,6 +75,11 @@ public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testDeleteMovie() {
+		window.textBox("genreIdTextBox").enterText("1");
+		window.textBox("genreNameTextBox").enterText("Action");
+		window.button(JButtonMatcher.withText("Add Genre")).click();
+		window.list("genreList").selectItem(0);
+
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
@@ -86,6 +93,11 @@ public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
 	@Test
 	@GUITest
 	public void testMarkMovieAsWatched() {
+		window.textBox("genreIdTextBox").enterText("1");
+		window.textBox("genreNameTextBox").enterText("Action");
+		window.button(JButtonMatcher.withText("Add Genre")).click();
+		window.list("genreList").selectItem(0);
+
 		window.textBox("movieIdTextBox").enterText("1");
 		window.textBox("movieTitleTextBox").enterText("Inception");
 		window.textBox("movieYearTextBox").enterText("2010");
