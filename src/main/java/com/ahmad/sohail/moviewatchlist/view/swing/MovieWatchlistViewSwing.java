@@ -181,7 +181,7 @@ public class MovieWatchlistViewSwing extends JFrame implements MovieWatchlistVie
 	}
 
 	private void addDocumentListenerToEnableAddGenreButton() {
-		javax.swing.event.DocumentListener listener = new javax.swing.event.DocumentListener() {
+		DocumentListener listener = new DocumentListener() {
 			@Override
 			public void insertUpdate(javax.swing.event.DocumentEvent e) {
 				updateAddGenreButton();

@@ -18,6 +18,8 @@ import org.junit.runner.RunWith;
 import org.testcontainers.containers.MongoDBContainer;
 
 import com.ahmad.sohail.moviewatchlist.app.swing.MovieWatchlistAppSwing;
+import com.mongodb.MongoClient;
+import com.mongodb.ServerAddress;
 
 @RunWith(GUITestRunner.class)
 public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
@@ -26,9 +28,12 @@ public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
 	public static final MongoDBContainer mongo = new MongoDBContainer("mongo:4.4.18");
 
 	private FrameFixture window;
+	private MongoClient mongoClient;
 
 	@Override
 	protected void onSetUp() {
+		mongoClient = new MongoClient(new ServerAddress(mongo.getHost(), mongo.getMappedPort(27017)));
+		mongoClient.getDatabase("moviewatchlist").drop();
 		application(MovieWatchlistAppSwing.class)
 				.withArgs("--mongo-host=" + mongo.getHost(), "--mongo-port=" + mongo.getMappedPort(27017),
 						"--db-name=moviewatchlist", "--genre-collection=genre", "--movie-collection=movie")
@@ -40,6 +45,11 @@ public class MovieWatchlistAppSwingE2ETest extends AssertJSwingJUnitTestCase {
 			}
 		}).using(robot());
 		window.resizeTo(new java.awt.Dimension(800, 900));
+	}
+
+	@Override
+	protected void onTearDown() {
+		mongoClient.close();
 	}
 
 	@Test

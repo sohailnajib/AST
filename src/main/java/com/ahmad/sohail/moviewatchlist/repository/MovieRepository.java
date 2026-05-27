@@ -4,11 +4,11 @@ import java.util.List;
 import com.ahmad.sohail.moviewatchlist.model.Movie;
 
 public interface MovieRepository {
-	public List<Movie> findAll();
+	List<Movie> findAll();
 
-	public Movie findById(String id);
+	Movie findById(String id);
 
-	public void save(Movie movie);
+	void save(Movie movie);
 
-	public void delete(String id);
+	void delete(String id);
 }

@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InOrder;
@@ -33,11 +34,17 @@ public class MovieWatchlistControllerTest {
 	private MovieRepository movieRepository;
 
 	private MovieWatchlistController controller;
+	private AutoCloseable closeable;
 
 	@Before
 	public void setup() {
-		MockitoAnnotations.openMocks(this);
+		closeable = MockitoAnnotations.openMocks(this);
 		controller = new MovieWatchlistController(view, genreRepository, movieRepository);
+	}
+
+	@After
+	public void releaseMocks() throws Exception {
+		closeable.close();
 	}
 
 	@Test

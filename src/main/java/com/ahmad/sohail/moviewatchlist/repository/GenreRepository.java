@@ -4,11 +4,11 @@ import java.util.List;
 import com.ahmad.sohail.moviewatchlist.model.Genre;
 
 public interface GenreRepository {
-	public List<Genre> findAll();
+	List<Genre> findAll();
 
-	public Genre findById(String id);
+	Genre findById(String id);
 
-	public void save(Genre genre);
+	void save(Genre genre);
 
-	public void delete(String id);
+	void delete(String id);
 }

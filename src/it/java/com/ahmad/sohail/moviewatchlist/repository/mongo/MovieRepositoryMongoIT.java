@@ -15,6 +15,11 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
+/*
+ * To run this test from Eclipse outside of Maven, start a MongoDB container manually:
+ * docker run -p 27017:27017 mongo:4.4.18
+ * Testcontainers starts the container automatically during the Maven build.
+ */
 public class MovieRepositoryMongoIT {
 
 	private static final String DB_NAME = "moviewatchlist";

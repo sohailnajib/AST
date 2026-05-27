@@ -25,6 +25,11 @@ import com.ahmad.sohail.moviewatchlist.view.swing.MovieWatchlistViewSwing;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
+/*
+ * To run this test from Eclipse outside of Maven, start a MongoDB container manually:
+ * docker run -p 27017:27017 mongo:4.4.18
+ * Testcontainers starts the container automatically during the Maven build.
+ */
 @RunWith(GUITestRunner.class)
 public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 
@@ -106,5 +111,16 @@ public class ModelViewControllerIT extends AssertJSwingJUnitTestCase {
 		window.list("movieList").selectItem(0);
 		window.button(JButtonMatcher.withText("Delete Movie")).click();
 		await().atMost(5, TimeUnit.SECONDS).untilAsserted(() -> assertThat(movieRepository.findById("1")).isNull());
+	}
+
+	@Test
+	@GUITest
+	public void testMarkMovieAsWatched() {
+		movieRepository.save(new Movie("1", "Inception", 2010, "1"));
+		GuiActionRunner.execute(() -> controller.allMovies());
+		window.list("movieList").selectItem(0);
+		window.button(JButtonMatcher.withText("Mark as Watched")).click();
+		await().atMost(5, TimeUnit.SECONDS)
+				.untilAsserted(() -> assertThat(movieRepository.findById("1").isWatched()).isTrue());
 	}
 }

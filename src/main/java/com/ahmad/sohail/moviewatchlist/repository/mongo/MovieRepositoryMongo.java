@@ -28,16 +28,21 @@ public class MovieRepositoryMongo implements MovieRepository {
 	@Override
 	public List<Movie> findAll() {
 		return StreamSupport
-				.stream(client.getDatabase(dbName).getCollection(collectionName).find().spliterator(), false)
-				.map(d -> new Movie("" + d.get("id"), "" + d.get(TITLE), (int) d.get("year"), "" + d.get(GENRE_ID)))
-				.toList();
+				.stream(client.getDatabase(dbName).getCollection(collectionName).find().spliterator(), false).map(d -> {
+					Movie m = new Movie("" + d.get("id"), "" + d.get(TITLE), (int) d.get("year"), "" + d.get(GENRE_ID));
+					m.setWatched((boolean) d.get("watched"));
+					return m;
+				}).toList();
 	}
 
 	@Override
 	public Movie findById(String id) {
 		Document d = client.getDatabase(dbName).getCollection(collectionName).find(Filters.eq("id", id)).first();
-		if (d != null)
-			return new Movie("" + d.get("id"), "" + d.get(TITLE), (int) d.get("year"), "" + d.get(GENRE_ID));
+		if (d != null) {
+			Movie m = new Movie("" + d.get("id"), "" + d.get(TITLE), (int) d.get("year"), "" + d.get(GENRE_ID));
+			m.setWatched((boolean) d.get("watched"));
+			return m;
+		}
 		return null;
 	}
 
